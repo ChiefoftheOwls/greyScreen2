@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "greyScreen2",
+    "slug": "greyScreen2",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "greyScreen2"
+}
