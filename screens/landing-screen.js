@@ -8,7 +8,7 @@ export const LandingPage = ({ navigation }) =>  {
   const [searchName, setSearchName]= useState('');
 
   const apiSummonerURL = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
-  const apiKey = 'RGAPI-71d1306d-9008-4eb5-a8a9-f6d1894fd9f9';  
+  const apiKey = 'RGAPI-ab6334f2-ad63-4fa8-b560-4a19a30bf954';  
 
   const _onChangeText = input => {
     setSearchName(input);
@@ -17,13 +17,13 @@ export const LandingPage = ({ navigation }) =>  {
   useEffect(()=>{
     if(summoner.puuid){
         console.log("the summoner is ", summoner.name);
-        navigation.navigate('MatchHistory', {summonerName, summonerPuuid});
+        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel});
     }
   },[summoner.puuid]);
 
-  const doSteps = async () => {
-    getSummonerFromRiotApi(); // wait on this to finish before the second one can be called.
-  };
+  // const doSteps = async () => {
+  //   getSummonerFromRiotApi(); // wait on this to finish before the second one can be called.
+  // };
 
   const getSummonerFromRiotApi = async () => {
     try {
@@ -42,6 +42,7 @@ export const LandingPage = ({ navigation }) =>  {
   };
   const summonerName = summoner.name;
   const summonerPuuid = summoner.puuid;
+  const summonerLevel = summoner.summonerLevel;
   
   return (
     <View style={styles.container}>
@@ -51,7 +52,7 @@ export const LandingPage = ({ navigation }) =>  {
         onChangeText={_onChangeText}
       />
       <Pressable 
-        onPress={doSteps}
+        onPress={getSummonerFromRiotApi}
         style={styles.button}>
        
         <Text style={styles.buttonText}>Submit</Text>
@@ -68,7 +69,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF5EE',
     justifyContent: 'center',
     padding: 8,
-    // alignItems: 'center',
   },
 
   button: {

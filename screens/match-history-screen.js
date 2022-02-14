@@ -1,15 +1,16 @@
 // import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
-// import { MatchHandler } from '../components/match-handler.component';
+import { MatchHandler } from '../components/match-handler.component';
 
 export const MatchHistory = ({ route, navigation }) => {
-  const { summonerName, summonerPuuid } = route.params;
-  console.log('PAGE2', summonerName);
-  console.log('PAGE2', summonerPuuid);
+  const { summonerName, summonerPuuid, summonerLevel } = route.params;
+  // console.log('PAGE2', summonerName);
+  // console.log('PAGE2', summonerPuuid);
+  // console.log('PAGE2', summonerLevel);
   const [matches, setMatches] = useState([]);
 
-  const apiKey = process.env.REACT_APP_API_KEY;
+  const apiKey = 'RGAPI-ab6334f2-ad63-4fa8-b560-4a19a30bf954';
   const apiMatchesURL = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20`;
   
   useEffect(()=> {
@@ -28,20 +29,26 @@ export const MatchHistory = ({ route, navigation }) => {
         }
       })
       const data = await response.json();
-      // console.log("should be a list of matches", data);
       setMatches(data);
     } 
     catch (error) {
       console.error(error);
     }
   };
+
+    console.log(matches);
     return (
       <View>
-    {/* // <MatchHandler 
-    //     matchList={matches}
-    //     apiKey={apiKey} 
-    //     /> */}
-      <Text>{summonerName}</Text>
+      <Text>{summonerName}, Level: {summonerLevel}</Text>
+     
+     {!!matches && matches.map(match => (
+        <MatchHandler 
+          match={match}
+          player={summonerName}
+          apiKey={apiKey}
+        />
+      ))}
+      
     </View>
 
     );
