@@ -34,7 +34,6 @@ export const LandingPage = ({ navigation }) =>  {
       })
       const data = await response.json();
       setSummoner(data);
-      console.log('data', data);
     } 
     catch (error) {
       console.error(error);

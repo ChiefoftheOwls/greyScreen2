@@ -5,8 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { MatchHistory } from './screens/match-history-screen';
 
-const apiK = process.env.REACT_APP_RIOT_API_KEY;
-console.log('THE KEY', apiK);
+// const apiK = process.env.REACT_APP_RIOT_API_KEY;
+// console.log('THE KEY', apiK);
 
 const Stack = createNativeStackNavigator();
  
