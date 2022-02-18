@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import { VictoryHandler } from './victory-handler.component';
+import { useNavigation } from '@react-navigation/native';
 
-export const MatchHandler = ({match, pos, player, apiKey}) => {
-    console.log('matchid?', match);
+
+export const MatchHandler = ({match, player, apiKey}) => {
+    // console.log('matchid?', match);
     const apiMatchDataURL = `https://americas.api.riotgames.com/lol/match/v5/matches/${match}`;
     const defaultGameState = {info: {participants: []}}
     const [game, setGame] = useState(defaultGameState);
-    const [result, setResult] = useState({});
-    const [kda, setKda] = useState(0);
+    const [result, setResult] = useState(null);
+    const navigation = useNavigation();
+    // const kda = useMemo(()=> {
+    //     if(result){
+    //         return (result.kills +result.assists)/result.deaths;
+    //     }
+    // }, [result]);
+
     
     const getGameForMatchFromRiotApi = async () => {
         try {
@@ -26,51 +33,74 @@ export const MatchHandler = ({match, pos, player, apiKey}) => {
           }
     };
     useEffect(()=>{
-        console.log('in the useEffect');
         if(!!match){
             getGameForMatchFromRiotApi();
-            console.log('made it into the if');
         }
-       
     },[match]);
 
     useEffect(()=>{
         if(!!game?.info.participants.length){
             findSummoner(game, player);
-            let ans = (result.kills+result.assists)/result.deaths;
-            setKda(ans.toFixed(2));
         }
-        console.log('the data i need', result)
-
     }, [game])
 
+    const _onClickDetails = () => {
+        navigation.navigate('GameDetails',{game, result, player});
+    }
+
     const findSummoner = (game, player) => {
-        console.log('in the func');
-        for (let i=0; i < game.info.participants.length; i++){
-            if(game.info.participants[i].summonerName == player){
-                setResult( game.info.participants[i]);
-                break;
-            }
-            else{
-                continue;
-            }
-        }
+        setResult(game.info.participants.find(participant => participant.summonerName == player ));
     }
 
     return( 
-    <View>
-        <Text>{pos +1}- {result.championName}</Text>
-        <Text>queued: {result.lane}, played: {result.teamPosition}</Text>
-        <Text>{result.kills} / {result.deaths} / {result.assists}</Text>
-        <Text>{kda}:1 KDA</Text>
-    </View>
+        <View style={styles.container}>
+            {!!result &&
+                <View style={result.win ? styles.win : styles.lose}>
+                    <TouchableOpacity onPress={_onClickDetails}>
+                        <Text style={styles.champ}>{result.championName}</Text>
+                        <Text>Level {result.champLevel}, played: {result.individualPosition}</Text>
+                        <Text style={styles.text2}>vision score: {result.visionScore}</Text>
+                        <Text style={styles.killDeathsAssists}>{result.kills} / {result.deaths} / {result.assists}</Text>
+                        <Text style={styles.killRatio}>{result?.challenges.kda.toFixed(2)}:1 KDA</Text>
+                    </TouchableOpacity>
+                </View>
+            }
+        </View>
     );
 };
 
 MatchHandler.propTypes = {
     match: PropTypes.string,
-    pos: PropTypes.number,
     player: PropTypes.string,
-    apiKey: PropTypes.string
+    apiKey: PropTypes.string,
 };
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#FFF5EE',
+        justifyContent: 'center',
+        padding: 8,
+    },
+    champ: {
+     fontWeight: '500',
+    },
+    text2: {
+        fontStyle: 'italic',
+    },
+    killDeathsAssists:{
+      fontWeight: 'bold',
+    },
+    lose: {
+        backgroundColor: 'tomato',
+        padding:8,
+    },
+    win: {
+        backgroundColor: 'skyblue',
+        padding:8,
+    },
+    killRatio: {
+        color: '#696969',
+    }
+  
+  });
 export default React.memo(MatchHandler);

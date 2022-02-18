@@ -10,7 +10,7 @@ export const MatchHistory = ({ route, navigation }) => {
   // console.log('PAGE2', summonerLevel);
   const [matches, setMatches] = useState([]);
 
-  const apiKey = 'RGAPI-ab6334f2-ad63-4fa8-b560-4a19a30bf954';
+  const apiKey = 'RGAPI-a5de5c60-f1af-4bc8-b7cb-e7b7cd89427f';
   const apiMatchesURL = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20`;
   
   useEffect(()=> {
@@ -28,7 +28,6 @@ export const MatchHistory = ({ route, navigation }) => {
       })
       const data = await response.json();
       const oneLessData = data.slice(0, 19);
-      console.log('before data', data);
       setMatches(oneLessData);
     } 
     catch (error) {
@@ -36,10 +35,10 @@ export const MatchHistory = ({ route, navigation }) => {
     }
   };
 
-    console.log(matches);
+    // console.log(matches);
     return (
 
-        <View>
+        <View style={styles.container}>
         <Text style={styles.text}>{summonerName}</Text>
         <Text style={styles.level}>{summonerLevel}</Text>
         {!!matches &&    
@@ -48,7 +47,6 @@ export const MatchHistory = ({ route, navigation }) => {
             renderItem={({item, index}) => (
               <MatchHandler 
                 match={item}
-                pos={index}
                 player={summonerName}
                 apiKey={apiKey}
               />
@@ -66,6 +64,9 @@ export const MatchHistory = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container:{
+    backgroundColor: '#FFF5EE',
+  },
   text: {
     fontWeight: '500',
     fontSize: 24,

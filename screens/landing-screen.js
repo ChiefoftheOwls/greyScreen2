@@ -8,7 +8,7 @@ export const LandingPage = ({ navigation }) =>  {
   const [searchName, setSearchName]= useState('');
 
   const apiSummonerURL = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
-  const apiKey = 'RGAPI-ab6334f2-ad63-4fa8-b560-4a19a30bf954';  
+  const apiKey = 'RGAPI-a5de5c60-f1af-4bc8-b7cb-e7b7cd89427f';  
 
   const _onChangeText = input => {
     setSearchName(input);
@@ -20,10 +20,6 @@ export const LandingPage = ({ navigation }) =>  {
         navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel});
     }
   },[summoner.puuid]);
-
-  // const doSteps = async () => {
-  //   getSummonerFromRiotApi(); // wait on this to finish before the second one can be called.
-  // };
 
   const getSummonerFromRiotApi = async () => {
     try {
@@ -38,6 +34,7 @@ export const LandingPage = ({ navigation }) =>  {
     catch (error) {
       console.error(error);
     }
+
   };
   const summonerName = summoner.name;
   const summonerPuuid = summoner.puuid;
