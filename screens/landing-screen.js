@@ -8,7 +8,7 @@ export const LandingPage = ({ navigation }) =>  {
   const [searchName, setSearchName]= useState('');
 
   const apiSummonerURL = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
-  const apiKey = 'RGAPI-a5de5c60-f1af-4bc8-b7cb-e7b7cd89427f';  
+  const apiKey = 'RGAPI-b79c26ac-e5b8-47ce-a4f0-49304838f9ca';  
 
   const _onChangeText = input => {
     setSearchName(input);
@@ -17,7 +17,7 @@ export const LandingPage = ({ navigation }) =>  {
   useEffect(()=>{
     if(summoner.puuid){
         console.log("the summoner is ", summoner.name);
-        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel});
+        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel, summonerIcon});
     }
   },[summoner.puuid]);
 
@@ -39,7 +39,8 @@ export const LandingPage = ({ navigation }) =>  {
   const summonerName = summoner.name;
   const summonerPuuid = summoner.puuid;
   const summonerLevel = summoner.summonerLevel;
-  
+  const summonerIcon = summoner.profileIconId;
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Enter a summoner name to Search</Text>
