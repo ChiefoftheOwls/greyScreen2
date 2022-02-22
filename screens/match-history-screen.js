@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 15,
-    marginRight: 20
+    marginRight: 5
   }
 });
 export default React.memo(MatchHistory);

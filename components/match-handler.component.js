@@ -11,7 +11,10 @@ export const MatchHandler = ({match, player, apiKey}) => {
     const [game, setGame] = useState(defaultGameState);
     const [result, setResult] = useState(null);
     const navigation = useNavigation();
-    const champIconUrl = `https://opgg-static.akamaized.net/images/lol/champion/${result.championName}.png?image=q_auto,f_webp,w_auto`;
+    const champIconUrl = `https://opgg-static.akamaized.net/images/lol/champion/${result?.championName}.png?image=q_auto,f_webp,w_auto`;
+    const keystoneUrl = `https://opgg-static.akamaized.net/images/lol/perk/${result?.perks.styles[0].selections[0].perk}.png?image=q_auto,f_webp,w_auto`;
+    const secondaryRuneUrl = `https://opgg-static.akamaized.net/images/lol/perkStyle/${result?.perks.styles[1].style}.png?image=q_auto,f_webp,w_auto`;
+  
     // const kda = useMemo(()=> {
     //     if(result){
     //         return (result.kills +result.assists)/result.deaths;
@@ -65,7 +68,13 @@ export const MatchHandler = ({match, player, apiKey}) => {
                             <Text style={styles.killDeathsAssists}>{result.kills} / {result.deaths} / {result.assists}</Text>
                             <Text style={styles.killRatio}>{result?.challenges.kda.toFixed(2)}:1 KDA</Text>
                         </View>
-                        <Image style={styles.champIcon} source={{uri: champIconUrl}}/>
+                        <View  style={styles.runeContainer}>
+                            <View>
+                                <Image style={styles.runes} source={{uri: keystoneUrl}}/>
+                                <Image style={styles.runes} source={{uri: secondaryRuneUrl}}/>
+                            </View>
+                            <Image style={styles.champIcon} source={{uri: champIconUrl}}/>
+                        </View>
                     </TouchableOpacity>
                 </View>
             }
@@ -113,6 +122,18 @@ const styles = StyleSheet.create({
     touchable: {
         flexDirection:'row',
         justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    runes: {
+        height: 22,
+        width: 22,
+        borderColor: 'black',
+        borderWidth: 3,
+        backgroundColor: 'black',
+        borderRadius: 8
+    },
+    runeContainer: {
+        flexDirection: 'row',
         alignItems: 'center'
     }
   
