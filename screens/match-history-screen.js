@@ -11,7 +11,7 @@ export const MatchHistory = ({ route, navigation }) => {
   // console.log('PAGE2', summonerIcon);
   const [matches, setMatches] = useState([]);
 
-  const apiKey = 'RGAPI-b79c26ac-e5b8-47ce-a4f0-49304838f9ca';
+  const apiKey = 'RGAPI-d3123e1a-6d98-42a2-9c95-22201dcf504c';
   const apiMatchesURL = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20`;
   const iconUrl = `https://opgg-static.akamaized.net/images/profile_icons/profileIcon${summonerIcon}.jpg?image=q_auto&image=q_auto,f_webp,w_auto`;
 

@@ -1,20 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { GameDetailsHandler } from '../components/game-details-handler.component';
 
 
 export const GameDetails = ({ route, navigation }) => {
     const { game, result, player } = route.params;
+
     const _epochConverter = (secs) => {
         let minutes = Math.floor(secs/60);
         let seconds = ((secs % 60)).toFixed(0);
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
     return(
-        <View>
-            <Text>{player}</Text>
-            <Text>Total game time: {_epochConverter(result.challenges.gameLength)} </Text>
-            <Text style={styles.title}>Winning Team</Text>
+        <ScrollView style={styles.container}>
+            <Text style={styles.text}>Game Length: {_epochConverter(result.challenges.gameLength)} </Text>
+            <Text style={styles.title}>Victory</Text>
             {game.info.participants.filter(participant => participant.win).map( participant =>(
                 <GameDetailsHandler
                 participant={participant}
@@ -22,7 +22,7 @@ export const GameDetails = ({ route, navigation }) => {
                 />
                 ))
             }
-             <Text style={styles.title}>Losing Team</Text>
+             <Text style={styles.title}>Defeat</Text>
                 {game.info.participants.filter(participant => !participant.win).map( participant =>(
                     <GameDetailsHandler
                     participant={participant}
@@ -30,60 +30,58 @@ export const GameDetails = ({ route, navigation }) => {
                     />
                     ))
                 }
-                <Text>Control Wards Placed: {result.challenges.controlWardsPlaced}</Text>
-                <Text>Trinket Wards Placed: {result.challenges.stealthWardsPlaced}</Text>
+                <Text style={styles.title}>Performance Stats</Text>
+                <View style={styles.imgStatsContainer}>
+                    <Text>Placed: {result.challenges.controlWardsPlaced}  </Text>
+                    <Image style={styles.itemBuild} source={require('../controlWard.png')} />
+                </View>
+                <View style={styles.imgStatsContainer}>
+                    <Image style={styles.itemBuild} source={require('../ward.png')}/>
+                    <Text> {result.challenges.stealthWardsPlaced} placed, {result.wardsKilled} killed</Text>
+                </View>
+                <Text style={styles.text}>Damage Breakdown</Text>
+
                 <Text>Solo Kills: {result.challenges.soloKills}</Text>
-                <Text>Kill participation: {result.challenges.killParticipation.toFixed(2) *10 *10}%</Text>
-                <Text>Percentage of team damage: {result.challenges.teamDamagePercentage.toFixed(3) * 10 * 10}%</Text>
+                <Text>Kill participation: {(result.challenges.killParticipation *100).toFixed(2)}%</Text>
+                <Text>Damage dealt: {result.totalDamageDealtToChampions}</Text>
+                <Text>Damage breakdown: {result.physicalDamageDealtToChampions} Physical, 
+                    {result.magicDamageDealtToChampions} Magical & {result.trueDamageDealtToChampions} True </Text>
+                <Text>Damage Per Minute: {result.challenges.damagePerMinute.toFixed(2)}</Text>
+                <Text>Percentage of team damage: {(result.challenges.teamDamagePercentage * 100).toFixed(1)}%</Text>
                 <Text>Minions killed in first 10 minutes: {result.challenges.laneMinionsFirst10Minutes}</Text>
                 <Text>Turret plates taken: {result.challenges.turretPlatesTaken}</Text>
                 <Text>Maximum CS advantage over lane opponent: {result.challenges.maxCsAdvantageOnLaneOpponent}</Text>
                 <Text>Maximum level lead on lane opponent: {result.challenges.maxLevelLeadLaneOpponent} </Text>
                 <Text>Skillshots landed: {result.challenges.skillshotsHit} </Text>
                 <Text>Skillshots dodged: {result.challenges.skillshotsDodged} </Text>
-        </View>
+        </ScrollView>
     );
 
 };
 
 const styles = StyleSheet.create({
     container: {
-        fontFamily: 'Cambria',
-    },
-    
-    cell : {
-        fontWeight: 'bold',
-        marginRight: 10,
-    },
-    rowWin: {
-        justifyContent:'flex-start',
-        flexDirection: 'row',
-        backgroundColor: 'skyblue',
-        padding: 5,
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 1
-    },
-    rowLose: {
-        padding: 5,
-        backgroundColor: 'tomato',
-        flexDirection: 'row',
-        justifyContent:'flex-end',
-        alignItems: 'flex-end',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 1,
+        backgroundColor: '#FFF5EE',
     },
     title: {
         fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        backgroundColor: '#FFE4C4',
+    },  
+    itemBuild: {
+        height: 22,
+        width: 22
     },
-    cell2: {
-        marginRight: 5,
-        fontStyle: 'italic',
-    }
+    text: {
+        fontWeight: '500',
+        fontSize: 16,
+    },
+    imgStatsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
 
+    }
     
 });
 export default React.memo(GameDetails);

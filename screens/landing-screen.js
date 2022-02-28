@@ -8,7 +8,7 @@ export const LandingPage = ({ navigation }) =>  {
   const [searchName, setSearchName]= useState('');
 
   const apiSummonerURL = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
-  const apiKey = 'RGAPI-b79c26ac-e5b8-47ce-a4f0-49304838f9ca';  
+  const apiKey = 'RGAPI-d3123e1a-6d98-42a2-9c95-22201dcf504c';  
 
   const _onChangeText = input => {
     setSearchName(input);
