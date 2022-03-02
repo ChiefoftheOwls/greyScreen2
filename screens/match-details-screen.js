@@ -1,10 +1,44 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Dimensions } from 'react-native';
 import { GameDetailsHandler } from '../components/game-details-handler.component';
+import { PieChart } from 'react-native-chart-kit';
 
 
 export const GameDetails = ({ route, navigation }) => {
     const { game, result, player } = route.params;
+    const data = [
+        {
+            name: 'Physical',
+            damage: result.physicalDamageDealtToChampions,
+            color: 'tomato',
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: 'Magical',
+            damage: result.magicDamageDealtToChampions,
+            color: 'purple',
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: 'True',
+            damage: result.trueDamageDealtToChampions,
+            color: '#F5F5F5',
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        }
+    ];
+    const chartConfig = {
+        backgroundGradientFrom: "#1E2923",
+        backgroundGradientFromOpacity: 0,
+        backgroundGradientTo: "#08130D",
+        backgroundGradientToOpacity: 0.5,
+        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+        strokeWidth: 2, // optional, default 3
+        barPercentage: 0.5,
+        useShadowColorFromDataset: false // optional
+    };
 
     const _epochConverter = (secs) => {
         let minutes = Math.floor(secs/60);
@@ -40,6 +74,15 @@ export const GameDetails = ({ route, navigation }) => {
                     <Text> {result.challenges.stealthWardsPlaced} placed, {result.wardsKilled} killed</Text>
                 </View>
                 <Text style={styles.text}>Damage Breakdown</Text>
+                <PieChart
+                    data={data}
+                    width={Dimensions.get('window').width}
+                    height={250}
+                    chartConfig={chartConfig}
+                    accessor={'damage'}
+                    backgroundColor={'#696969'}
+                    paddingLeft={'15'}
+                />
 
                 <Text>Solo Kills: {result.challenges.soloKills}</Text>
                 <Text>Kill participation: {(result.challenges.killParticipation *100).toFixed(2)}%</Text>

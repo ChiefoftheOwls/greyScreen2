@@ -1,17 +1,12 @@
-// import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import { MatchHandler } from '../components/match-handler.component';
 
 export const MatchHistory = ({ route, navigation }) => {
   const { summonerName, summonerPuuid, summonerLevel, summonerIcon } = route.params;
-  // console.log('PAGE2', summonerName);
-  // console.log('PAGE2', summonerPuuid);
-  // console.log('PAGE2', summonerLevel);
-  // console.log('PAGE2', summonerIcon);
   const [matches, setMatches] = useState([]);
 
-  const apiKey = 'RGAPI-d3123e1a-6d98-42a2-9c95-22201dcf504c';
+  const apiKey = 'RGAPI-57f4f2c4-f365-49f2-87a3-9a732968de69';
   const apiMatchesURL = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20`;
   const iconUrl = `https://opgg-static.akamaized.net/images/profile_icons/profileIcon${summonerIcon}.jpg?image=q_auto&image=q_auto,f_webp,w_auto`;
 
@@ -37,7 +32,6 @@ export const MatchHistory = ({ route, navigation }) => {
     }
   };
 
-    // console.log(matches);
     return (
 
         <View style={styles.container}>
