@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
+import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 
 
-export const MatchHandler = ({match, player, apiKey}) => {
-    // console.log('matchid?', match);
-    const apiMatchDataURL = `https://americas.api.riotgames.com/lol/match/v5/matches/${match}`;
+export const MatchHandler = ({match, player, region}) => {
+    const apiMatchDataURL = `https://${region}.api.riotgames.com/lol/match/v5/matches/${match}`;
     const defaultGameState = {info: {participants: []}}
     const [game, setGame] = useState(defaultGameState);
     const [result, setResult] = useState(null);
@@ -26,7 +26,7 @@ export const MatchHandler = ({match, player, apiKey}) => {
         try {
             const response = await fetch (apiMatchDataURL, {
               headers: {
-                "X-Riot-Token": apiKey
+                "X-Riot-Token": REACT_NATIVE_API_RIOT_KEY
               }
             })
             const data = await response.json();
@@ -49,7 +49,7 @@ export const MatchHandler = ({match, player, apiKey}) => {
     }, [game])
 
     const _onClickDetails = () => {
-        navigation.navigate('GameDetails',{game, result, player});
+        navigation.navigate('GameDetails',{game, result});
     }
 
     const findSummoner = (game, player) => {
@@ -85,7 +85,7 @@ export const MatchHandler = ({match, player, apiKey}) => {
 MatchHandler.propTypes = {
     match: PropTypes.string,
     player: PropTypes.string,
-    apiKey: PropTypes.string,
+    region: PropTypes.string
 };
 
 const styles = StyleSheet.create({

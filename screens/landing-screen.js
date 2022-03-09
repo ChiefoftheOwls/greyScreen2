@@ -1,23 +1,95 @@
 import { StatusBar } from 'expo-status-bar';
 import  React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { Dropdown } from 'sharingan-rn-modal-dropdown';
+import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 
 
 export const LandingPage = ({ navigation }) =>  {
   const [summoner, setSummoner] = useState({puuid: null});
   const [searchName, setSearchName]= useState('');
+  const [region, setRegion] = useState({});
 
-  const apiSummonerURL = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
-  const apiKey = 'RGAPI-57f4f2c4-f365-49f2-87a3-9a732968de69';  
+  const apiSummonerURL = `https://${region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
 
   const _onChangeText = input => {
     setSearchName(input);
   };
-  
+  const _onChangeRegion =(value) => {
+    console.log(value, 'this thing');
+    setRegion(regionServers.find(regionServer => regionServer.value == value));
+  }
+  /* regions:
+    BR1, brazil
+    EUN1 - EU nordic east
+    EUW1 - Eu west
+    JP1 - Japan
+    KR - Korea
+    LA1 - Latin America North
+    LA2 - Latin Ameirca South
+    NA1 - North America
+    OC1 - Oceania
+    RU - russia
+    TR1 - turkey
+
+  */
+  const regionServers = [
+    {
+      value: 'br1',
+      label: 'BR',
+      area: 'americas'
+    },
+    {
+      value: 'eun1',
+      label: 'EUNE',
+      area: 'europe'
+    },
+    {
+      value: 'euw1',
+      label: 'EUW',
+      area: 'europe'
+    },
+    {
+      value: 'kr',
+      label: 'KR',
+      area: 'asia'
+    },
+    {
+      value: 'la1',
+      label: 'LAN',
+      area: 'americas'
+    },
+    {
+      value: 'la2',
+      label: 'LAS',
+      area: 'americas'
+
+    },
+    {
+      value: 'na1',
+      label: 'NA',
+      area: 'americas'
+    },
+    {
+      value: 'oc1',
+      label: 'OCE',
+      area: 'asia'
+    },
+    {
+      value: 'ru',
+      label: 'RU',
+      area: 'europe'
+    },
+    {
+      value: 'tr1',
+      label: 'TR',
+      area: 'europe'
+    },
+  ];
   useEffect(()=>{
     if(summoner.puuid){
         console.log("the summoner is ", summoner.name);
-        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel, summonerIcon});
+        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel, summonerIcon, region});
     }
   },[summoner.puuid]);
 
@@ -25,7 +97,7 @@ export const LandingPage = ({ navigation }) =>  {
     try {
       const response = await fetch (apiSummonerURL, {
         headers: {
-          "X-Riot-Token": apiKey
+          "X-Riot-Token": REACT_NATIVE_API_RIOT_KEY
         }
       })
       const data = await response.json();
@@ -48,6 +120,15 @@ export const LandingPage = ({ navigation }) =>  {
         style={styles.input}
         onChangeText={_onChangeText}
       />
+      <View style={styles.dropDown}>
+        <Dropdown
+          label='Region'
+          data={regionServers}
+          enableSearch
+          value={region}
+          onChange={_onChangeRegion}
+        />
+      </View>
       <Pressable 
         onPress={getSummonerFromRiotApi}
         style={styles.button}>
@@ -99,6 +180,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'center',
+  },
+  dropDown: {
+    height: 25,
+    marginBottom: 50,
+    marginHorizontal: 12
   }
 });
 

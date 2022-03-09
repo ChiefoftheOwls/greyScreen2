@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import { MatchHandler } from '../components/match-handler.component';
+import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 
 export const MatchHistory = ({ route, navigation }) => {
-  const { summonerName, summonerPuuid, summonerLevel, summonerIcon } = route.params;
+  const { summonerName, summonerPuuid, summonerLevel, summonerIcon, region } = route.params;
   const [matches, setMatches] = useState([]);
-
-  const apiKey = 'RGAPI-57f4f2c4-f365-49f2-87a3-9a732968de69';
-  const apiMatchesURL = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20`;
+  console.log('the regions is', region);
+  const apiMatchesURL = `https://${region.area}.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=19`;
   const iconUrl = `https://opgg-static.akamaized.net/images/profile_icons/profileIcon${summonerIcon}.jpg?image=q_auto&image=q_auto,f_webp,w_auto`;
 
   useEffect(()=> {
@@ -20,12 +20,11 @@ export const MatchHistory = ({ route, navigation }) => {
     try {
       const response = await fetch (apiMatchesURL, {
         headers: {
-          "X-Riot-Token": apiKey
+          "X-Riot-Token": REACT_NATIVE_API_RIOT_KEY
         }
       })
       const data = await response.json();
-      const oneLessData = data.slice(0, 19);
-      setMatches(oneLessData);
+      setMatches(data);
     } 
     catch (error) {
       console.error(error);
@@ -47,7 +46,7 @@ export const MatchHistory = ({ route, navigation }) => {
                 <MatchHandler 
                   match={item}
                   player={summonerName}
-                  apiKey={apiKey}
+                  region={region.area}
                 />
               )
               }
