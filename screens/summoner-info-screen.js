@@ -4,8 +4,6 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 
 export const SummonerInfoPage = ({route}) =>{
   const { region, summonerEncryptedId } = route.params;
-  // console.log('region object', region);
-  // console.log('encryptedId', summonerEncryptedId);
   const [leagues, setLeagues] = useState([]);
   const apiRankedURL = `https://${region.value}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerEncryptedId}`;
 
@@ -13,7 +11,6 @@ export const SummonerInfoPage = ({route}) =>{
     if(region && summonerEncryptedId){
       getRankedDataFromRiotApi();
     }
-  console.log('league data',leagues);
 
   }, [region, summonerEncryptedId])
   
@@ -25,7 +22,6 @@ export const SummonerInfoPage = ({route}) =>{
           }
         })
         const data = await response.json();
-        console.log('the thing that should be here', data);
         setLeagues(data);
       } 
       catch (error) {
