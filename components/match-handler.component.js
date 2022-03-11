@@ -66,7 +66,7 @@ export const MatchHandler = ({match, player, region}) => {
                             <Text>Level {result.champLevel}, played: {result.individualPosition}</Text>
                             <Text style={styles.text2}>vision score: {result.visionScore}</Text>
                             <Text style={styles.killDeathsAssists}>{result.kills} / {result.deaths} / {result.assists}</Text>
-                            <Text style={styles.killRatio}>{result?.challenges.kda.toFixed(2)}:1 KDA</Text>
+                            {/* <Text style={styles.killRatio}>{result?.challenges.kda.toFixed(2)}:1 KDA</Text> */}
                         </View>
                         <View  style={styles.runeContainer}>
                             <View>

@@ -8,7 +8,11 @@ import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 export const LandingPage = ({ navigation }) =>  {
   const [summoner, setSummoner] = useState({puuid: null});
   const [searchName, setSearchName]= useState('');
-  const [region, setRegion] = useState({});
+  const [region, setRegion] = useState({
+    value: 'na1',
+    label: 'NA',
+    area: 'americas'
+  });
 
   const apiSummonerURL = `https://${region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
 
@@ -16,7 +20,6 @@ export const LandingPage = ({ navigation }) =>  {
     setSearchName(input);
   };
   const _onChangeRegion =(value) => {
-    console.log(value, 'this thing');
     setRegion(regionServers.find(regionServer => regionServer.value == value));
   }
   /* regions:
@@ -88,8 +91,7 @@ export const LandingPage = ({ navigation }) =>  {
   ];
   useEffect(()=>{
     if(summoner.puuid){
-        console.log("the summoner is ", summoner.name);
-        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel, summonerIcon, region});
+        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel, summonerIcon, summonerEncryptedId, region});
     }
   },[summoner.puuid]);
 
@@ -112,6 +114,7 @@ export const LandingPage = ({ navigation }) =>  {
   const summonerPuuid = summoner.puuid;
   const summonerLevel = summoner.summonerLevel;
   const summonerIcon = summoner.profileIconId;
+  const summonerEncryptedId = summoner.id;
 
   return (
     <View style={styles.container}>

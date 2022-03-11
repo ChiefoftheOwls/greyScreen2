@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { MatchHandler } from '../components/match-handler.component';
 import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 
 export const MatchHistory = ({ route, navigation }) => {
-  const { summonerName, summonerPuuid, summonerLevel, summonerIcon, region } = route.params;
+  const { summonerName, summonerPuuid, summonerLevel, summonerIcon, summonerEncryptedId, region } = route.params;
+  console.log('encryptedId matchHistory page', summonerEncryptedId);
   const [matches, setMatches] = useState([]);
-  console.log('the regions is', region);
   const apiMatchesURL = `https://${region.area}.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=19`;
   const iconUrl = `https://opgg-static.akamaized.net/images/profile_icons/profileIcon${summonerIcon}.jpg?image=q_auto&image=q_auto,f_webp,w_auto`;
 
@@ -31,13 +31,18 @@ export const MatchHistory = ({ route, navigation }) => {
     }
   };
 
+  const _onClickSummonerInfo = () => {
+    console.log('encryptedId matchHistory page23', summonerEncryptedId);
+    navigation.navigate('SummonerData',{region, summonerEncryptedId});
+  };
+
     return (
 
         <View style={styles.container}>
-          <View style={styles.overview}>
+          <TouchableOpacity style={styles.overview} onPress={_onClickSummonerInfo}>
             <Image style={styles.icon} source={{ uri: iconUrl }} />
             <Text style={styles.text}>{summonerName}</Text>
-          </View>
+          </TouchableOpacity>
           <Text style={styles.level}>{summonerLevel}</Text>
           {!!matches &&    
             <FlatList
