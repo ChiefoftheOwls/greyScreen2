@@ -55,4 +55,4 @@ web-build/
 dist/
 
 #API key
-.env
+constants.js
