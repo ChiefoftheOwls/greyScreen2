@@ -31,7 +31,7 @@ export const MatchHistory = ({ route, navigation }) => {
   };
 
   const _onClickSummonerInfo = () => {
-    navigation.navigate('SummonerData',{region, summonerEncryptedId});
+    navigation.navigate('SummonerData',{region, summonerEncryptedId, summonerName, summonerLevel, summonerIcon});
   };
 
     return (
