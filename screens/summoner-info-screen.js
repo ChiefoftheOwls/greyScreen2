@@ -1,12 +1,12 @@
 import { REACT_NATIVE_API_RIOT_KEY } from "../constants";
 import React, { useState, useEffect, useMemo } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
+import { ProfileHandler } from "../components/profile-handler.component";
 
 export const SummonerInfoPage = ({route}) =>{
   const { region, summonerEncryptedId, summonerName, summonerLevel, summonerIcon } = route.params;
   const [leagues, setLeagues] = useState([]);
   const apiRankedURL = `https://${region.value}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerEncryptedId}`;
-  const iconUrl = `https://opgg-static.akamaized.net/images/profile_icons/profileIcon${summonerIcon}.jpg?image=q_auto&image=q_auto,f_webp,w_auto`;
 
   useEffect(()=>{
     if(region && summonerEncryptedId){
@@ -65,11 +65,11 @@ export const SummonerInfoPage = ({route}) =>{
 
   return (
     <View style={styles.container}>
-      <View>
-        <Image style={styles.icon} source={{ uri: iconUrl }} />
-        <Text style={styles.summonertext}>{summonerName}</Text>
-        <Text style={styles.level}>{summonerLevel}</Text>
-      </View>
+      <ProfileHandler
+        summonerIcon={summonerIcon}
+        summonerLevel={summonerLevel}
+        summonerName={summonerName}
+      />
       {!!soloQue &&
         <View style={styles.rankContainer}>
           <Image style={styles.rankIcon} source={{uri: _getRankImageUrl(soloQue.tier, soloQue.rank)}}/>
@@ -112,17 +112,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '300'
-  },
-  icon: {
-    width: 62,
-    height: 62,
-    borderRadius: 15,
-    marginRight: 5
-  },
-  summonertext: {
-    fontWeight: '500',
-    fontSize: 24,
-    textAlign: 'center',
   },
   rankContainer: {
     flexDirection: 'row',

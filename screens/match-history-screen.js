@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { MatchHandler } from '../components/match-handler.component';
 import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
+import { ProfileHandler } from '../components/profile-handler.component';
 
 export const MatchHistory = ({ route, navigation }) => {
   const { summonerName, summonerPuuid, summonerLevel, summonerIcon, summonerEncryptedId, region } = route.params;
@@ -38,10 +39,12 @@ export const MatchHistory = ({ route, navigation }) => {
 
         <View style={styles.container}>
           <TouchableOpacity style={styles.overview} onPress={_onClickSummonerInfo}>
-            <Image style={styles.icon} source={{ uri: iconUrl }} />
-            <Text style={styles.text}>{summonerName}</Text>
+            <ProfileHandler
+              summonerIcon={summonerIcon}
+              summonerLevel={summonerLevel}
+              summonerName={summonerName}
+            />
           </TouchableOpacity>
-          <Text style={styles.level}>{summonerLevel}</Text>
           {!!matches &&    
             <FlatList
               data={matches}
@@ -75,21 +78,5 @@ const styles = StyleSheet.create({
     marginTop: 10
 
   },
-  text: {
-    fontWeight: '500',
-    fontSize: 24,
-    textAlign: 'center',
-  },
-  level:{
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '300'
-  },
-  icon: {
-    width: 42,
-    height: 42,
-    borderRadius: 15,
-    marginRight: 5
-  }
 });
 export default React.memo(MatchHistory);
