@@ -16,7 +16,7 @@ export const ProfileHandler = ({summonerIcon, summonerName, summonerLevel}) => {
 
 ProfileHandler.propTypes ={
     summonerIcon: PropTypes.number,
-    summonerLevel: PropTypes.string,
+    summonerLevel: PropTypes.number,
     summonerName: PropTypes.string
 };
 const styles= StyleSheet.create({
