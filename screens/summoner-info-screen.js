@@ -70,17 +70,6 @@ export const SummonerInfoPage = ({route}) =>{
         <Text style={styles.summonertext}>{summonerName}</Text>
         <Text style={styles.level}>{summonerLevel}</Text>
       </View>
-      {!!flexQue &&
-        <View style={styles.rankContainer}>
-          <Image style={styles.rankIcon} source={{uri: _getRankImageUrl(flexQue.tier, flexQue.rank)}}/>
-          <View>
-            <Text style={styles.winRate}>Ranked Flex</Text>
-            <Text style={styles.rank}>{flexQue.tier} {_convertRomanToInt(flexQue.rank)}</Text>
-            <Text>{flexQue.leaguePoints}LP <Text style={styles.winRate}>/ {flexQue.wins} wins {flexQue.losses} losses</Text></Text>
-            <Text style={styles.winRate}>Win Rate {_winRateCalculator(flexQue.wins, flexQue.losses)}%</Text>
-          </View>
-        </View>
-      }
       {!!soloQue &&
         <View style={styles.rankContainer}>
           <Image style={styles.rankIcon} source={{uri: _getRankImageUrl(soloQue.tier, soloQue.rank)}}/>
@@ -91,6 +80,17 @@ export const SummonerInfoPage = ({route}) =>{
               <Text>{soloQue.leaguePoints}LP</Text> <Text style={styles.winRate}>/ {soloQue.wins} wins {soloQue.losses} losses </Text>
             </Text>
             <Text style={styles.winRate}>Win Rate {_winRateCalculator(soloQue.wins, soloQue.losses)}%</Text>
+          </View>
+        </View>
+      }
+      {!!flexQue &&
+        <View style={styles.rankContainer}>
+          <Image style={styles.rankIcon} source={{uri: _getRankImageUrl(flexQue.tier, flexQue.rank)}}/>
+          <View>
+            <Text style={styles.winRate}>Ranked Flex</Text>
+            <Text style={styles.rank}>{flexQue.tier} {_convertRomanToInt(flexQue.rank)}</Text>
+            <Text>{flexQue.leaguePoints}LP <Text style={styles.winRate}>/ {flexQue.wins} wins {flexQue.losses} losses</Text></Text>
+            <Text style={styles.winRate}>Win Rate {_winRateCalculator(flexQue.wins, flexQue.losses)}%</Text>
           </View>
         </View>
       }
