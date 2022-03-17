@@ -6,10 +6,11 @@ import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 import { StoreContext } from '../store-context';
 
 
-export const MatchHandler = ({match, region}) => {
+export const MatchHandler = ({match}) => {
     const appStore = useContext(StoreContext);
     const {user: summoner} = appStore;
-    const apiMatchDataURL = `https://${region}.api.riotgames.com/lol/match/v5/matches/${match}`;
+    const {region: region} = appStore;
+    const apiMatchDataURL = `https://${region.area}.api.riotgames.com/lol/match/v5/matches/${match}`;
     const defaultGameState = {info: {participants: []}}
     const [game, setGame] = useState(defaultGameState);
     const [result, setResult] = useState(null);
@@ -86,7 +87,6 @@ export const MatchHandler = ({match, region}) => {
 
 MatchHandler.propTypes = {
     match: PropTypes.string,
-    region: PropTypes.string
 };
 
 const styles = StyleSheet.create({

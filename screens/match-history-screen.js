@@ -49,7 +49,6 @@ export const MatchHistory = ({ navigation }) => {
               renderItem={({item, index}) => (
                 <MatchHandler 
                   match={item}
-                  region={region.area}
                 />
               )
               }
