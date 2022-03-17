@@ -10,7 +10,6 @@ export const LandingPage = ({ navigation }) =>  {
   const [searchName, setSearchName]= useState('');
 
   const appStore = useContext(StoreContext);
-  console.log(StoreContext);
   const {region: region} = appStore;
   const apiSummonerURL = `https://${region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
 
