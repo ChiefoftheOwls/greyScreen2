@@ -33,7 +33,7 @@ export const MatchHandler = ({match}) => {
             console.error(error);
           }
     };
-    
+
     useEffect(()=>{
         if(!!match){
             getGameForMatchFromRiotApi();

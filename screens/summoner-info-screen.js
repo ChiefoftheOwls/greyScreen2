@@ -1,19 +1,22 @@
 import { REACT_NATIVE_API_RIOT_KEY } from "../constants";
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { ProfileHandler } from "../components/profile-handler.component";
+import { StoreContext } from "../store-context";
 
-export const SummonerInfoPage = ({route}) =>{
-  const { region, summonerEncryptedId, summonerName, summonerLevel, summonerIcon } = route.params;
+export const SummonerInfoPage = () =>{
+  const appStore = useContext(StoreContext);
+  const {user: summoner} = appStore;
+  const {region: region} = appStore;
   const [leagues, setLeagues] = useState([]);
-  const apiRankedURL = `https://${region.value}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerEncryptedId}`;
+  const apiRankedURL = `https://${region.value}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summoner.id}`;
 
   useEffect(()=>{
-    if(region && summonerEncryptedId){
+    if(region && summoner.id){
       getRankedDataFromRiotApi();
     }
 
-  }, [region, summonerEncryptedId])
+  }, [region, summoner])
   
   const getRankedDataFromRiotApi = async () => {
       try {
@@ -65,11 +68,7 @@ export const SummonerInfoPage = ({route}) =>{
 
   return (
     <View style={styles.container}>
-      <ProfileHandler
-        summonerIcon={summonerIcon}
-        summonerLevel={summonerLevel}
-        summonerName={summonerName}
-      />
+      <ProfileHandler/>
       {!!soloQue &&
         <View style={styles.rankContainer}>
           <Image style={styles.rankIcon} source={{uri: _getRankImageUrl(soloQue.tier, soloQue.rank)}}/>

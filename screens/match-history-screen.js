@@ -6,10 +6,11 @@ import { ProfileHandler } from '../components/profile-handler.component';
 import { StoreContext } from '../store-context';
 
 export const MatchHistory = ({ navigation }) => {
-  const [matches, setMatches] = useState([]);
+  // const [matches, setMatches] = useState([]);
   const appStore = useContext(StoreContext);
   const {user: summoner} = appStore;
   const {region: region} = appStore;
+  const {matches: matches} = appStore;
   const apiMatchesURL = `https://${region.area}.api.riotgames.com/lol/match/v5/matches/by-puuid/${summoner.puuid}/ids?start=0&count=19`;
 
   useEffect(()=> {
@@ -26,7 +27,7 @@ export const MatchHistory = ({ navigation }) => {
         }
       })
       const data = await response.json();
-      setMatches(data);
+      appStore.setMatches(data);
     } 
     catch (error) {
       console.error(error);
@@ -34,7 +35,7 @@ export const MatchHistory = ({ navigation }) => {
   };
 
   const _onClickSummonerInfo = () => {
-    navigation.navigate('SummonerData',{region});
+    navigation.navigate('SummonerData');
   };
 
     return (
