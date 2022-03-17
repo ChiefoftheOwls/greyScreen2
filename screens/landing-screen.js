@@ -1,26 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import  React, { useState, useEffect } from 'react';
+import  React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import { Dropdown } from 'sharingan-rn-modal-dropdown';
 import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
-
+import { StoreContext } from '../store-context';
 
 export const LandingPage = ({ navigation }) =>  {
   const [summoner, setSummoner] = useState({puuid: null});
   const [searchName, setSearchName]= useState('');
-  const [region, setRegion] = useState({
-    value: 'na1',
-    label: 'NA',
-    area: 'americas'
-  });
 
+  const appStore = useContext(StoreContext);
+  console.log(StoreContext);
+  const {region: region} = appStore;
   const apiSummonerURL = `https://${region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
 
   const _onChangeText = input => {
     setSearchName(input);
   };
   const _onChangeRegion =(value) => {
-    setRegion(regionServers.find(regionServer => regionServer.value == value));
+    appStore.setRegion(regionServers.find(regionServer => regionServer.value == value));
   }
   /* regions:
     BR1, brazil
@@ -91,7 +89,7 @@ export const LandingPage = ({ navigation }) =>  {
   ];
   useEffect(()=>{
     if(summoner.puuid){
-        navigation.navigate('MatchHistory', {summonerName, summonerPuuid, summonerLevel, summonerIcon, summonerEncryptedId, region});
+        navigation.navigate('MatchHistory');
     }
   },[summoner.puuid]);
 
@@ -104,18 +102,14 @@ export const LandingPage = ({ navigation }) =>  {
       })
       const data = await response.json();
       setSummoner(data);
+      appStore.setUser(data);
     } 
     catch (error) {
       console.error(error);
     }
 
   };
-  const summonerName = summoner.name;
-  const summonerPuuid = summoner.puuid;
-  const summonerLevel = summoner.summonerLevel;
-  const summonerIcon = summoner.profileIconId;
-  const summonerEncryptedId = summoner.id;
-
+ 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Enter a summoner name to Search</Text>

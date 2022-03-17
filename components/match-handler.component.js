@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
+import { StoreContext } from '../store-context';
 
 
-export const MatchHandler = ({match, player, region}) => {
+export const MatchHandler = ({match, region}) => {
+    const appStore = useContext(StoreContext);
+    const {user: summoner} = appStore;
     const apiMatchDataURL = `https://${region}.api.riotgames.com/lol/match/v5/matches/${match}`;
     const defaultGameState = {info: {participants: []}}
     const [game, setGame] = useState(defaultGameState);
@@ -44,7 +47,7 @@ export const MatchHandler = ({match, player, region}) => {
 
     useEffect(()=>{
         if(!!game?.info.participants.length){
-            findSummoner(game, player);
+            findSummoner(game, summoner.name);
         }
     }, [game])
 
@@ -66,7 +69,6 @@ export const MatchHandler = ({match, player, region}) => {
                             <Text>Level {result.champLevel}, played: {result.individualPosition}</Text>
                             <Text style={styles.text2}>vision score: {result.visionScore}</Text>
                             <Text style={styles.killDeathsAssists}>{result.kills} / {result.deaths} / {result.assists}</Text>
-                            {/* <Text style={styles.killRatio}>{result?.challenges.kda.toFixed(2)}:1 KDA</Text> */}
                         </View>
                         <View  style={styles.runeContainer}>
                             <View>
@@ -84,7 +86,6 @@ export const MatchHandler = ({match, player, region}) => {
 
 MatchHandler.propTypes = {
     match: PropTypes.string,
-    player: PropTypes.string,
     region: PropTypes.string
 };
 

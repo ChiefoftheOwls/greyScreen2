@@ -1,24 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import PropTypes from 'prop-types';
+import { StoreContext } from '../store-context';
 
-export const ProfileHandler = ({summonerIcon, summonerName, summonerLevel}) => {
-    const iconUrl = `https://opgg-static.akamaized.net/images/profile_icons/profileIcon${summonerIcon}.jpg?image=q_auto&image=q_auto,f_webp,w_auto`;
+export const ProfileHandler = () => {
+    const appStore = useContext(StoreContext);
+    const {user: summoner} = appStore; // destructure user into summoner
+    const iconUrl = `https://opgg-static.akamaized.net/images/profile_icons/profileIcon${summoner.profileIconId}.jpg?image=q_auto&image=q_auto,f_webp,w_auto`;
 
     return(
         <View style={styles.container}>
             <Image style={styles.icon} source={{ uri: iconUrl }} />
-            <Text style={styles.summonertext}>{summonerName}</Text>
-            <Text style={styles.level}>{summonerLevel}</Text>
+            <Text style={styles.summonertext}>{summoner.name}</Text>
+            <Text style={styles.level}>{summoner.summonerLevel}</Text>
         </View>
     );
 };
 
-ProfileHandler.propTypes ={
-    summonerIcon: PropTypes.number,
-    summonerLevel: PropTypes.number,
-    summonerName: PropTypes.string
-};
 const styles= StyleSheet.create({
     icon: {
         width: 62,
