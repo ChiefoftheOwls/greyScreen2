@@ -1,4 +1,4 @@
-# greyScreen2
+# GreyScreen.GG
 A League of Legends companion app for mobile. 
 
 Built with React Navtive to support iOS and Android.
