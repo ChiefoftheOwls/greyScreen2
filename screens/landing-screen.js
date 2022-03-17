@@ -20,7 +20,7 @@ export const LandingPage = ({ navigation }) =>  {
     appStore.setRegion(regionServers.find(regionServer => regionServer.value == value));
   }
   /* regions:
-    BR1, brazil
+    BR1 - brazil
     EUN1 - EU nordic east
     EUW1 - Eu west
     JP1 - Japan

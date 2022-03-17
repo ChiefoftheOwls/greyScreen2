@@ -18,14 +18,7 @@ export const MatchHandler = ({match}) => {
     const champIconUrl = `https://opgg-static.akamaized.net/images/lol/champion/${result?.championName}.png?image=q_auto,f_webp,w_auto`;
     const keystoneUrl = `https://opgg-static.akamaized.net/images/lol/perk/${result?.perks.styles[0].selections[0].perk}.png?image=q_auto,f_webp,w_auto`;
     const secondaryRuneUrl = `https://opgg-static.akamaized.net/images/lol/perkStyle/${result?.perks.styles[1].style}.png?image=q_auto,f_webp,w_auto`;
-  
-    // const kda = useMemo(()=> {
-    //     if(result){
-    //         return (result.kills +result.assists)/result.deaths;
-    //     }
-    // }, [result]);
 
-    
     const getGameForMatchFromRiotApi = async () => {
         try {
             const response = await fetch (apiMatchDataURL, {
@@ -40,6 +33,7 @@ export const MatchHandler = ({match}) => {
             console.error(error);
           }
     };
+    
     useEffect(()=>{
         if(!!match){
             getGameForMatchFromRiotApi();
