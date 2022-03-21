@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import { MatchHandler } from '../components/match-handler.component';
-import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 import { ProfileHandler } from '../components/profile-handler.component';
 import { StoreContext } from '../store-context';
+import apiService from '../Services/api-service';
 
 export const MatchHistory = ({ navigation }) => {
-  // const [matches, setMatches] = useState([]);
   const appStore = useContext(StoreContext);
   const {user: summoner} = appStore;
   const {region: region} = appStore;
@@ -15,24 +14,13 @@ export const MatchHistory = ({ navigation }) => {
 
   useEffect(()=> {
     if(summoner.puuid){
-      getMatchesFromRiotApi();
+      _getMatches();
     }
   }, [summoner.puuid])
 
-  const getMatchesFromRiotApi = async () => {
-    try {
-      const response = await fetch (apiMatchesURL, {
-        headers: {
-          "X-Riot-Token": REACT_NATIVE_API_RIOT_KEY
-        }
-      })
-      const data = await response.json();
-      appStore.setMatches(data);
-    } 
-    catch (error) {
-      console.error(error);
-    }
-  };
+  const _getMatches = async () => {
+    appStore.setMatches(await apiService.getMatchesFromRiotApi(apiMatchesURL));
+  }
 
   const _onClickSummonerInfo = () => {
     navigation.navigate('SummonerData');

@@ -1,22 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import  React, { useState, useEffect, useContext } from 'react';
+import  React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import { Dropdown } from 'sharingan-rn-modal-dropdown';
-import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 import { StoreContext } from '../store-context';
+import ApiService from '../Services/api-service';
 
 export const LandingPage = ({ navigation }) =>  {
-  const [summoner, setSummoner] = useState({puuid: null});
   const [searchName, setSearchName]= useState('');
-
   const appStore = useContext(StoreContext);
   const {region: region} = appStore;
   const apiSummonerURL = `https://${region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${searchName}`;
 
+
   const _onChangeText = input => {
     setSearchName(input);
   };
-  const _onChangeRegion =(value) => {
+  const _onChangeRegion = (value) => {
     appStore.setRegion(regionServers.find(regionServer => regionServer.value == value));
   }
   /* regions:
@@ -31,7 +30,6 @@ export const LandingPage = ({ navigation }) =>  {
     OC1 - Oceania
     RU - russia
     TR1 - turkey
-
   */
   const regionServers = [
     {
@@ -86,27 +84,10 @@ export const LandingPage = ({ navigation }) =>  {
       area: 'europe'
     },
   ];
-  useEffect(()=>{
-    if(summoner.puuid){
-        navigation.navigate('MatchHistory');
-    }
-  },[summoner.puuid]);
 
-  const getSummonerFromRiotApi = async () => {
-    try {
-      const response = await fetch (apiSummonerURL, {
-        headers: {
-          "X-Riot-Token": REACT_NATIVE_API_RIOT_KEY
-        }
-      })
-      const data = await response.json();
-      setSummoner(data);
-      appStore.setUser(data);
-    } 
-    catch (error) {
-      console.error(error);
-    }
-
+  const _getSummoner = async () => {
+    appStore.setUser(await ApiService.getSummonerFromRiotApi(apiSummonerURL));
+    navigation.navigate('MatchHistory');
   };
  
   return (
@@ -126,7 +107,7 @@ export const LandingPage = ({ navigation }) =>  {
         />
       </View>
       <Pressable 
-        onPress={getSummonerFromRiotApi}
+        onPress={_getSummoner}
         style={styles.button}>
        
         <Text style={styles.buttonText}>Submit</Text>

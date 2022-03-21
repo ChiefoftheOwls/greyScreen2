@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import { REACT_NATIVE_API_RIOT_KEY } from '../constants';
 import { StoreContext } from '../store-context';
+import apiService from '../Services/api-service';
 
 
 export const MatchHandler = ({match}) => {
@@ -19,27 +19,17 @@ export const MatchHandler = ({match}) => {
     const keystoneUrl = `https://opgg-static.akamaized.net/images/lol/perk/${result?.perks.styles[0].selections[0].perk}.png?image=q_auto,f_webp,w_auto`;
     const secondaryRuneUrl = `https://opgg-static.akamaized.net/images/lol/perkStyle/${result?.perks.styles[1].style}.png?image=q_auto,f_webp,w_auto`;
 
-    const getGameForMatchFromRiotApi = async () => {
-        try {
-            const response = await fetch (apiMatchDataURL, {
-              headers: {
-                "X-Riot-Token": REACT_NATIVE_API_RIOT_KEY
-              }
-            })
-            const data = await response.json();
-            setGame(data);
-          } 
-          catch (error) {
-            console.error(error);
-          }
-    };
-
+    
+    
     useEffect(()=>{
         if(!!match){
-            getGameForMatchFromRiotApi();
+            _getGame();
         }
     },[match]);
-
+    
+    const _getGame = async () =>{
+        setGame(await apiService.getGameForMatchFromRiotApi(apiMatchDataURL));
+    }
     useEffect(()=>{
         if(!!game?.info.participants.length){
             findSummoner(game, summoner.name);
