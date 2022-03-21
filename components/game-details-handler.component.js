@@ -1,18 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
+import { StoreContext } from '../store-context';
+
 
 export const GameDetailsHandler = ({participant}) => {
+    const appStore = useContext(StoreContext);
+    const navigation = useNavigation();
     const champIconUrl = `https://opgg-static.akamaized.net/images/lol/champion/${participant?.championName}.png?image=q_auto,f_webp,w_auto`;
+    const _onTapSummoner = (player) => {
+
+        appStore.setUser({
+            id: player.summonerId,
+            name: player.summonerName,
+            summonerLevel: player.summonerLevel,
+            puuid: player.puuid,
+            profileIconId: player.profileIcon,
+        });
+        navigation.push('MatchHistory');
+    }
 
     return (
         <View style={participant.win? styles.rowWin: styles.rowLose}>
             <Image style={styles.champIcon} source={{uri: champIconUrl}}/>
             <View style={{flex: 1}}>
                 <View key={participant.summonerName} style={styles.spaceBtwRow}>
-                    <Text style={styles.summoner}>
-                        {participant.summonerName}
-                    </Text>
+                    <TouchableOpacity onPress={() =>_onTapSummoner(participant)}>
+                        <Text style={styles.summoner}>{participant.summonerName}</Text>
+                    </TouchableOpacity>
                     <Text style={styles.killRatio}>
                     {participant.kills} <Text style={styles.slash}>/</Text> {participant.deaths} <Text style={styles.slash}>/</Text> {participant.assists}
                     </Text>
