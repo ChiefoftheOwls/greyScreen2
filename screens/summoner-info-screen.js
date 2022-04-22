@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { ProfileHandler } from "../components/profile-handler.component";
 import { StoreContext } from "../store-context";
+import { ChampMasteryHandler } from "../components/champ-mastery-handler.component";
 
 export const SummonerInfoPage = () =>{
   const appStore = useContext(StoreContext);
@@ -93,6 +94,7 @@ export const SummonerInfoPage = () =>{
           </View>
         </View>
       }
+      <ChampMasteryHandler/>
     </View>
   );
 }

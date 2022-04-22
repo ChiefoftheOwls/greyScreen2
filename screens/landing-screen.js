@@ -86,7 +86,7 @@ export const LandingPage = ({ navigation }) =>  {
   ];
 
   const _getSummoner = async () => {
-    appStore.setUser(await ApiService.getSummonerFromRiotApi(apiSummonerURL));
+    appStore.setUser(await ApiService.getDataFromRiotApi(apiSummonerURL));
     navigation.navigate('MatchHistory');
   };
  

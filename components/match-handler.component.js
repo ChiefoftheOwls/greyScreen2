@@ -28,7 +28,7 @@ export const MatchHandler = ({match}) => {
     },[match]);
     
     const _getGame = async () =>{
-        setGame(await apiService.getGameForMatchFromRiotApi(apiMatchDataURL));
+        setGame(await apiService.getDataFromRiotApi(apiMatchDataURL));
     }
     useEffect(()=>{
         if(!!game?.info.participants.length){

@@ -19,7 +19,7 @@ export const MatchHistory = ({ navigation }) => {
   }, [summoner.puuid])
 
   const _getMatches = async () => {
-    appStore.setMatches(await apiService.getMatchesFromRiotApi(apiMatchesURL));
+    appStore.setMatches(await apiService.getDataFromRiotApi(apiMatchesURL));
   }
 
   const _onClickSummonerInfo = () => {
